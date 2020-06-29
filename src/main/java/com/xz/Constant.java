@@ -27,7 +27,7 @@ public class Constant {
 
     public static final String GAME_OVER = "GAME OVER";
 
-    public static final String SCORE_STRING = "SCORE:";
+    public static final String SCORE_STRING = "SCORE: ";
 
     public static final String BULLET_SPEED = "bulletSpeed";
 

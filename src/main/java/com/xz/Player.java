@@ -8,8 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import static com.xz.Config.playerTankFireSpeedPerSecond;
-import static com.xz.Config.playerTankMoveSpeed;
+import static com.xz.Config.*;
 
 /**
  * @Package: com.xz
@@ -190,7 +189,15 @@ public class Player extends BaseTank {
             default:
                 break;
         }
-//        Sound.moveSound();
+        if(checkPosition()){
+            back();
+        }
+    }
+
+    private boolean checkPosition(){
+        return x < 0
+                || x > gameWidth - ImageResource.goodTankU.getWidth()
+                || y < ImageResource.goodTankU.getHeight()/2 || y > gameHeight - ImageResource.goodTankU.getHeight();
     }
 
     public void keyReleased(KeyEvent e) {

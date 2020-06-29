@@ -1,6 +1,7 @@
 package com.xz;
 
 import com.xz.collider.ColliderChain;
+import com.xz.collider.ColliderUtil;
 
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -51,7 +52,9 @@ public class TankFrame extends Frame {
 
     private void initWall() {
         Wall wall = new Wall(500,300,200,50);
-        addGameObject(wall);
+        if(checkPosition(wall)){
+            addGameObject(wall);
+        }
     }
 
     private void initBaseParam(){
@@ -81,7 +84,13 @@ public class TankFrame extends Frame {
     }
 
     private void initEnemy() {
-        addGameObjects(Enemy.getEnemyList(enemyTankCount));
+        AbstractGameObject abstractGameObject;
+        for (int i = 0; i < enemyTankCount; i++) {
+            do {
+                abstractGameObject = new Enemy();
+            }while (!checkPosition(abstractGameObject));
+            addGameObject(abstractGameObject);
+        }
     }
 
     private void initPlayer() {
@@ -117,9 +126,12 @@ public class TankFrame extends Frame {
                 colliderChain.collide(abstractGameObjectList.get(i),abstractGameObjectList.get(j));
             }
         }
-        abstractGameObjectList.removeIf(item->!item.isLiving());
         for (int i = 0; i < abstractGameObjectList.size(); i++) {
-            abstractGameObjectList.get(i).paint(g);
+            if(abstractGameObjectList.get(i).isLiving()){
+                abstractGameObjectList.get(i).paint(g);
+            }else{
+                abstractGameObjectList.remove(i);
+            }
         }
         g.setColor(Color.white);
         g.setFont(new Font(null, Font.BOLD, 36));
@@ -132,5 +144,14 @@ public class TankFrame extends Frame {
 
     public void addGameObjects(List<AbstractGameObject> abstractGameObject){
         abstractGameObjectList.addAll(abstractGameObject);
+    }
+
+    public boolean checkPosition(AbstractGameObject abstractGameObject){
+        for (AbstractGameObject gameObject : abstractGameObjectList) {
+            if(ColliderUtil.collideCheck(gameObject,abstractGameObject)){
+                return false;
+            }
+        }
+        return true;
     }
 }

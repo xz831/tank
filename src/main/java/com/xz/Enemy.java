@@ -30,15 +30,7 @@ public class Enemy extends BaseTank {
     private Long nextDirTimeStamp;
     private int oldX,oldY;
 
-    private Enemy() {
-    }
-
-    public static List<AbstractGameObject> getEnemyList(int size) {
-        List<AbstractGameObject> list = new ArrayList<>();
-        for (int i = 0; i < size; i++) {
-            list.add(new Enemy());
-        }
-        return list;
+    public Enemy() {
     }
 
     @Override
@@ -145,11 +137,11 @@ public class Enemy extends BaseTank {
     private Dir boundsCheck() {
         if (x < 30) {
             return Dir.L;
-        } else if (x > gameWidth - 70) {
+        } else if (x > gameWidth - 50) {
             return Dir.R;
         } else if (y < 30) {
             return Dir.U;
-        } else if (y > gameHeight - 70) {
+        } else if (y > gameHeight - 50) {
             return Dir.D;
         }
         return null;
