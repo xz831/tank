@@ -1,7 +1,8 @@
 package com.xz;
 
+import com.xz.collider.ColliderUtil;
+
 import java.awt.*;
-import java.util.List;
 
 import static com.xz.Config.*;
 
@@ -12,7 +13,7 @@ import static com.xz.Config.*;
  * @Date: 2020/6/27 13:01
  * @Version: 1.0
  */
-public class Bullet {
+public class Bullet extends AbstractGameObject {
     private int x, y;
     private Dir dir;
     private final Group group;
@@ -23,8 +24,10 @@ public class Bullet {
         this.y = y;
         this.dir = dir;
         this.group = group;
+        TankFrame.INSTANCE.addGameObject(this);
     }
 
+    @Override
     public void paint(Graphics g) {
         switch (dir) {
             case D:
@@ -38,6 +41,18 @@ public class Bullet {
                 break;
             case U:
                 g.drawImage(ImageResource.bulletU, x, y, null);
+                break;
+            case LD:
+                g.drawImage(ImageResource.bulletDL, x, y, null);
+                break;
+            case LU:
+                g.drawImage(ImageResource.bulletUL, x, y, null);
+                break;
+            case RD:
+                g.drawImage(ImageResource.bulletDR, x, y, null);
+                break;
+            case RU:
+                g.drawImage(ImageResource.bulletUR, x, y, null);
                 break;
             default:
                 break;
@@ -59,23 +74,44 @@ public class Bullet {
             case U:
                 y -= bulletSpeed;
                 break;
+            case LD:
+                x -= bulletSpeed;
+                y += bulletSpeed;
+                break;
+            case LU:
+                x -= bulletSpeed;
+                y -= bulletSpeed;
+                break;
+            case RD:
+                x += bulletSpeed;
+                y += bulletSpeed;
+                break;
+            case RU:
+                x += bulletSpeed;
+                y -= bulletSpeed;
+                break;
             default:
                 break;
         }
         boundsCheck();
     }
 
-    public boolean collidesWithTank(BaseTank tank) {
-        if (tank.isLiving()) {
-            Rectangle rect = new Rectangle(x, y, ImageResource.bulletU.getWidth(), ImageResource.bulletU.getHeight());
-            Rectangle rectTank = new Rectangle(tank.getX(), tank.getY(), ImageResource.badTankU.getWidth(), ImageResource.badTankU.getHeight());
-            if (rect.intersects(rectTank)) {
-                die();
-                tank.die();
-                return true;
+    public void collidesWithTank(BaseTank tank) {
+        if (isLiving() && tank.isLiving() && !group.equals(tank.getGroup())) {
+            if (ColliderUtil.collideCheck(this, tank)) {
+                if (tank.getGroup().equals(Group.GOOD)) {
+                    if (!invincible) {
+                        TankFrame.INSTANCE.gameOver = true;
+                        die();
+                        tank.die();
+                    }
+                } else {
+                    TankFrame.INSTANCE.score++;
+                    die();
+                    tank.die();
+                }
             }
         }
-        return false;
     }
 
     private void boundsCheck() {
@@ -84,30 +120,36 @@ public class Bullet {
         }
     }
 
+    @Override
     public boolean isLiving() {
         return living;
     }
 
-    private void die() {
+    @Override
+    public int getX() {
+        return x;
+    }
+
+    @Override
+    public int getY() {
+        return y;
+    }
+
+    @Override
+    public int getWidth() {
+        return ImageResource.bulletU.getWidth();
+    }
+
+    @Override
+    public int getHeight() {
+        return ImageResource.bulletU.getHeight();
+    }
+
+    public void die() {
         living = false;
     }
 
     public Group getGroup() {
         return group;
-    }
-
-    public boolean collidesWithTanks(List<Enemy> enemy) {
-        for (Enemy tank : enemy) {
-            if (tank.isLiving()) {
-                Rectangle rect = new Rectangle(x, y, ImageResource.bulletU.getWidth(), ImageResource.bulletU.getHeight());
-                Rectangle rectTank = new Rectangle(tank.getX(), tank.getY(), ImageResource.badTankU.getWidth(), ImageResource.badTankU.getHeight());
-                if (rect.intersects(rectTank)) {
-                    die();
-                    tank.die();
-                    return true;
-                }
-            }
-        }
-        return false;
     }
 }

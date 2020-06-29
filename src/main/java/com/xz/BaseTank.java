@@ -9,11 +9,9 @@ package com.xz;
  */
 public abstract class BaseTank extends AbstractGameObject{
 
-    abstract int getX();
+    public abstract void die();
 
-    abstract int getY();
+    public abstract Group getGroup();
 
-    abstract boolean isLiving();
-
-    abstract void die();
+    public abstract void back();
 }

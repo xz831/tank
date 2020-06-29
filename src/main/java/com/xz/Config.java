@@ -1,8 +1,11 @@
 package com.xz;
 
+import com.xz.collider.Collider;
 import com.xz.strategy.fire.FireStrategy;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 import static com.xz.Constant.*;
@@ -31,6 +34,8 @@ public class Config {
     public static int playerTankFireSpeedPerSecond;
     public static boolean soundOpen;
     public static FireStrategy fireStrategy;
+    public static boolean invincible;
+    public static List<Collider> colliderList;
     static {
         Properties properties = new java.util.Properties();
         try {
@@ -52,10 +57,18 @@ public class Config {
         playerTankMoveSpeed = Integer.parseInt(properties.getProperty(PLAYER_TANK_MOVE_SPEED));
         playerTankFireSpeedPerSecond = Integer.parseInt(properties.getProperty(PLAYER_TANK_FIRE_SPEED_PER_SECOND));
         soundOpen = Boolean.parseBoolean(properties.getProperty(SOUND_OPEN));
+        invincible = Boolean.parseBoolean(properties.getProperty(INVINCIBLE));
+
         try {
             String fireStrategyClassName = properties.getProperty(FIRE_STRATEGY);
             Class<?> clazz = Thread.currentThread().getContextClassLoader().loadClass("com.xz.strategy.fire." + fireStrategyClassName);
             fireStrategy = (FireStrategy) clazz.newInstance();
+            colliderList = new ArrayList<>();
+            String colliderClassName = properties.getProperty(COLLIDER_CHAIN);
+            for (String name : colliderClassName.split(",")) {
+                Class<?> clazzItem = Thread.currentThread().getContextClassLoader().loadClass("com.xz.collider." + name);
+                colliderList.add((Collider) clazzItem.newInstance());
+            }
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
             e.printStackTrace();
         }

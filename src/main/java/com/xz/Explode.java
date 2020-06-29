@@ -11,7 +11,7 @@ import static com.xz.ImageResource.bombImg;
  * @Date: 2020/6/28 11:43
  * @Version: 1.0
  */
-public class Explode {
+public class Explode extends AbstractGameObject{
 
     private final int x, y;
 
@@ -19,6 +19,7 @@ public class Explode {
 
     private int step;
 
+    @Override
     public void paint(Graphics graphics) {
         graphics.drawImage(bombImg[step++], x, y, null);
         if (step >= bombImg.length) {
@@ -26,13 +27,35 @@ public class Explode {
         }
     }
 
+    @Override
     public boolean isLiving() {
         return living;
+    }
+
+    @Override
+    public int getX() {
+        return x;
+    }
+
+    @Override
+    public int getY() {
+        return y;
+    }
+
+    @Override
+    public int getWidth() {
+        return bombImg[step].getWidth();
+    }
+
+    @Override
+    public int getHeight() {
+        return bombImg[step].getHeight();
     }
 
     public Explode(int x, int y) {
         this.x = x;
         this.y = y;
         Sound.explodeSound();
+        TankFrame.INSTANCE.addGameObject(this);
     }
 }

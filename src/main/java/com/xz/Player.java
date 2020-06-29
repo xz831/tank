@@ -21,7 +21,7 @@ import static com.xz.Config.playerTankMoveSpeed;
 public class Player extends BaseTank {
 
     private final Random random = new Random();
-    private int x, y;
+    private int x, y, oldX, oldY;
     private Dir dir;
     private boolean bL, bR, bU, bD;
     private List<Dir> dirs = new ArrayList<>(5);
@@ -82,6 +82,16 @@ public class Player extends BaseTank {
     @Override
     public int getY() {
         return y;
+    }
+
+    @Override
+    public int getWidth() {
+        return ImageResource.goodTankU.getWidth();
+    }
+
+    @Override
+    public int getHeight() {
+        return ImageResource.goodTankU.getHeight();
     }
 
     public void keyPressed(KeyEvent e) {
@@ -146,6 +156,8 @@ public class Player extends BaseTank {
     }
 
     private void move() {
+        oldX = x;
+        oldY = y;
         switch (dir) {
             case L:
                 x -= playerTankMoveSpeed;
@@ -228,7 +240,7 @@ public class Player extends BaseTank {
     @Override
     public void die() {
         living = false;
-        TankFrame.INSTANCE.addExplode(new Explode(x, y));
+        new Explode(x, y);
     }
 
     @Override
@@ -240,6 +252,7 @@ public class Player extends BaseTank {
         return dir;
     }
 
+    @Override
     public Group getGroup() {
         return group;
     }
@@ -250,5 +263,11 @@ public class Player extends BaseTank {
 
     public void setLastFireTimeStamp(Long lastFireTimeStamp) {
         this.lastFireTimeStamp = lastFireTimeStamp;
+    }
+
+    @Override
+    public void back() {
+        x = oldX;
+        y = oldY;
     }
 }

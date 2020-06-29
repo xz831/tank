@@ -14,7 +14,11 @@ import java.io.IOException;
  */
 public class ImageResource {
 
-    public static BufferedImage goodTankL, goodTankU, goodTankD, goodTankR, badTankL, badTankR, badTankU, badTankD, bulletU, bulletD, bulletL, bulletR;
+    public static BufferedImage goodTankL, goodTankU, goodTankD, goodTankR;
+
+    public static BufferedImage badTankL, badTankR, badTankU, badTankD;
+
+    public static BufferedImage bulletU, bulletD, bulletL, bulletR, bulletUL, bulletUR, bulletDL, bulletDR;
 
     public static BufferedImage[] bombImg = new BufferedImage[16];
 
@@ -32,6 +36,10 @@ public class ImageResource {
             bulletL = rotateImage(bulletU, -90);
             bulletR = rotateImage(bulletU, 90);
             bulletD = rotateImage(bulletU, 180);
+            bulletUL = rotateImage(bulletU, -45);
+            bulletUR = rotateImage(bulletU, 45);
+            bulletDL = rotateImage(bulletU, -135);
+            bulletDR = rotateImage(bulletU, 135);
             for (int i = 0; i < 16; i++) {
                 bombImg[i] = ImageIO.read(Thread.currentThread().getContextClassLoader().getResourceAsStream("images/e" + (i + 1) + ".gif"));
             }

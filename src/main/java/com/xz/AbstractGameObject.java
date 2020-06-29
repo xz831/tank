@@ -10,5 +10,10 @@ import java.awt.*;
  * @Version: 1.0
  */
 public abstract class AbstractGameObject {
-    abstract void paint(Graphics graphics);
+    public abstract void paint(Graphics graphics);
+    public abstract boolean isLiving();
+    public abstract int getX();
+    public abstract int getY();
+    public abstract int getWidth();
+    public abstract int getHeight();
 }

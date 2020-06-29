@@ -28,12 +28,13 @@ public class Enemy extends BaseTank {
     private Long lastFireTimeStamp = System.currentTimeMillis() + random.nextInt(3000);
     private boolean living = true;
     private Long nextDirTimeStamp;
+    private int oldX,oldY;
 
     private Enemy() {
     }
 
-    public static List<Enemy> getEnemyList(int size) {
-        List<Enemy> list = new ArrayList<>();
+    public static List<AbstractGameObject> getEnemyList(int size) {
+        List<AbstractGameObject> list = new ArrayList<>();
         for (int i = 0; i < size; i++) {
             list.add(new Enemy());
         }
@@ -76,6 +77,16 @@ public class Enemy extends BaseTank {
         return y;
     }
 
+    @Override
+    public int getWidth() {
+        return ImageResource.badTankU.getWidth();
+    }
+
+    @Override
+    public int getHeight() {
+        return ImageResource.badTankU.getHeight();
+    }
+
     private void fire() {
         if (/*lastFireTimeStamp == null||*/ lastFireTimeStamp + 60 * 1000 / enemyTankFireSpeedPerSecond <= System.currentTimeMillis()) {
             Bullet bullet;
@@ -95,7 +106,7 @@ public class Enemy extends BaseTank {
                 default:
                     return;
             }
-            TankFrame.INSTANCE.addBullet(bullet);
+            TankFrame.INSTANCE.addGameObject(bullet);
             lastFireTimeStamp = System.currentTimeMillis() + random.nextInt(2000);
             Sound.fireSound();
         }
@@ -103,6 +114,8 @@ public class Enemy extends BaseTank {
 
 
     private void move() {
+        oldX = x;
+        oldY = y;
         switch (dir) {
             case L:
                 x -= enemyTankMoveSpeed;
@@ -165,7 +178,7 @@ public class Enemy extends BaseTank {
     @Override
     public void die() {
         living = false;
-        INSTANCE.addExplode(new Explode(x, y));
+        new Explode(x, y);
     }
 
     @Override
@@ -185,5 +198,16 @@ public class Enemy extends BaseTank {
             }
         }
         return false;
+    }
+
+    @Override
+    public Group getGroup() {
+        return group;
+    }
+
+    @Override
+    public void back() {
+        x = oldX;
+        y = oldY;
     }
 }

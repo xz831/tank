@@ -15,6 +15,7 @@ import static com.xz.ImageResource.bombImg;
  * @Date: 2020/6/25 14:54
  * @Version: 1.0
  */
+@Deprecated
 public class Tank {
 
     private int x, y;
@@ -187,7 +188,7 @@ public class Tank {
                 default:
                     return;
             }
-            TankFrame.INSTANCE.addBullet(bullet);
+            TankFrame.INSTANCE.addGameObject(bullet);
             lastFireTimeStamp = System.currentTimeMillis();
         }
     }

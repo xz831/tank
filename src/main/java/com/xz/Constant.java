@@ -42,4 +42,8 @@ public class Constant {
     public static final String SOUND_OPEN = "soundOpen";
 
     public static final String FIRE_STRATEGY = "fireStrategy";
+
+    public static final String INVINCIBLE= "invincible";
+
+    public static final String COLLIDER_CHAIN = "colliderChain";
 }
