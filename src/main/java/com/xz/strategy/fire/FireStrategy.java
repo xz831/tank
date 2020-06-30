@@ -2,6 +2,8 @@ package com.xz.strategy.fire;
 
 import com.xz.Player;
 
+import java.io.Serializable;
+
 /**
  * @Package: com.xz.strategy.fire
  * @ClassName: FireStrategy
@@ -10,7 +12,7 @@ import com.xz.Player;
  * @Version: 1.0
  */
 @FunctionalInterface
-public interface FireStrategy {
+public interface FireStrategy extends Serializable {
     /**
      * 开火
      * @param player 玩家tank

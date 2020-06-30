@@ -56,6 +56,6 @@ public class Explode extends AbstractGameObject{
         this.x = x;
         this.y = y;
         Sound.explodeSound();
-        TankFrame.INSTANCE.addGameObject(this);
+        TankFrame.INSTANCE.getGameModel().addGameObject(this);
     }
 }

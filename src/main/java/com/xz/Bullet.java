@@ -24,7 +24,7 @@ public class Bullet extends AbstractGameObject {
         this.y = y;
         this.dir = dir;
         this.group = group;
-        TankFrame.INSTANCE.addGameObject(this);
+        TankFrame.INSTANCE.getGameModel().addGameObject(this);
     }
 
     @Override
@@ -101,12 +101,12 @@ public class Bullet extends AbstractGameObject {
             if (ColliderUtil.collideCheck(this, tank)) {
                 if (tank.getGroup().equals(Group.GOOD)) {
                     if (!invincible) {
-                        TankFrame.INSTANCE.gameOver = true;
+                        TankFrame.INSTANCE.getGameModel().gameOver = true;
                         die();
                         tank.die();
                     }
                 } else {
-                    TankFrame.INSTANCE.score++;
+                    TankFrame.INSTANCE.getGameModel().score++;
                     die();
                     tank.die();
                 }

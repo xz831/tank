@@ -188,7 +188,7 @@ public class Tank {
                 default:
                     return;
             }
-            TankFrame.INSTANCE.addGameObject(bullet);
+            TankFrame.INSTANCE.getGameModel().addGameObject(bullet);
             lastFireTimeStamp = System.currentTimeMillis();
         }
     }

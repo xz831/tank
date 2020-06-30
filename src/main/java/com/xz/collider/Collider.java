@@ -2,6 +2,8 @@ package com.xz.collider;
 
 import com.xz.AbstractGameObject;
 
+import java.io.Serializable;
+
 /**
  * @Package: com.xz.collider
  * @ClassName: Collider
@@ -9,7 +11,7 @@ import com.xz.AbstractGameObject;
  * @Date: 2020/6/29 14:14
  * @Version: 1.0
  */
-public interface Collider {
+public interface Collider extends Serializable {
     /**
      * 碰撞
      * @param o1 物体1

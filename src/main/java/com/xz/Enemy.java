@@ -98,7 +98,7 @@ public class Enemy extends BaseTank {
                 default:
                     return;
             }
-            TankFrame.INSTANCE.addGameObject(bullet);
+            TankFrame.INSTANCE.getGameModel().addGameObject(bullet);
             lastFireTimeStamp = System.currentTimeMillis() + random.nextInt(2000);
             Sound.fireSound();
         }

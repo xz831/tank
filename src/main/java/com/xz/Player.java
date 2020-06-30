@@ -4,8 +4,10 @@ import com.xz.strategy.fire.FireStrategy;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 import static com.xz.Config.*;
@@ -23,13 +25,13 @@ public class Player extends BaseTank {
     private int x, y, oldX, oldY;
     private Dir dir;
     private boolean bL, bR, bU, bD;
-    private List<Dir> dirs = new ArrayList<>(5);
+    private final List<Dir> dirs = new ArrayList<>(5);
     private Dir lastDir;
     private boolean moving = false;
     private final Group group = Group.GOOD;
     private Long lastFireTimeStamp;
     private boolean living = true;
-    private FireStrategy fireStrategy;
+    private final FireStrategy fireStrategy;
 
     public Player(int x, int y,FireStrategy fireStrategy) {
         this.x = x;
@@ -114,10 +116,60 @@ public class Player extends BaseTank {
             case ' ':
                 fire(fireStrategy);
                 break;
+            case 'q':
+                save();
+                break;
+            case 'e':
+                load();
+                break;
             default:
                 break;
         }
         setDir();
+    }
+
+    private void load() {
+        File file = new File("d://tankWar.data");
+        if(file.exists()){
+            ObjectInputStream objectInputStream = null;
+            try {
+                objectInputStream = new ObjectInputStream(new FileInputStream(file));
+                Object o = objectInputStream.readObject();
+                GameModel gameModel = (GameModel) o;
+                TankFrame.INSTANCE.setGameModel(gameModel);
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+            } finally {
+                if(objectInputStream != null){
+                    try {
+                        objectInputStream.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+    }
+
+    private void save() {
+        GameModel gameModel = TankFrame.INSTANCE.getGameModel();
+        ObjectOutputStream objectOutputStream = null;
+        try {
+            objectOutputStream = new ObjectOutputStream(new FileOutputStream("d://tankWar.data"));
+            objectOutputStream.writeObject(gameModel);
+            objectOutputStream.flush();
+            objectOutputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            if(objectOutputStream != null){
+                try {
+                    objectOutputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     private void fire(FireStrategy fireStrategy) {
